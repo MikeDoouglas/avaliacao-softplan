@@ -1,48 +1,55 @@
+package app;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
-public class GeradorObservacao { 
+public class GeradorObservacao {
 
-	//Textos pr�-definidos
-	static final String umoNota = "Fatura da nota fiscal de simples remessa: ";
-	//Identificador da entidade
-	String texto;
-		
-	//Gera observa��es, com texto pre-definido, incluindo os n�meros, das notas fiscais, recebidos no par�metro
-	public String geraObservacao(List lista) 
-	{
-		texto = "";
-		if (!lista.isEmpty()) 
-		{
-			return retornaCodigos(lista) + ".";
-		}		
-		return "";		
+	private final String TEXTO_NOTA_FISCAL_SINGULAR = "Fatura da nota fiscal de simples remessa: ";
+	private final String TEXTO_NOTA_FISCAL_PLURAL = "Fatura das notas fiscais de simples remessa: ";
+
+	public String geraObservacao(List lista) {
+		if (lista.isEmpty()) {
+			return "";
+		}
+		ArrayList<Integer> listaArrayList = new ArrayList<Integer>(lista);
+		ArrayList<String> codigosListaString = converteArrayList(listaArrayList);
+		String textoFatura = textoFatura(listaArrayList.size());
+		String codigosFatura = juntaCodigosFatura(codigosListaString);
+		return textoFatura + codigosFatura;
 	}
 
-	//Cria observa��o
-	private String retornaCodigos(List lista) {
-		if (lista.size() >= 2) {
-			texto = "Fatura das notas fiscais de simples remessa: ";
+	protected String textoFatura(Integer tamanhoLista) {
+		if (tamanhoLista == 1) {
+			return TEXTO_NOTA_FISCAL_SINGULAR;
 		} else {
-			texto = umoNota;
+			return TEXTO_NOTA_FISCAL_PLURAL;
 		}
-		
-		//Acha separador
-		StringBuilder cod = new StringBuilder();
-		for (Iterator<Integer> iterator = lista.iterator(); iterator.hasNext();) {
-			Integer c = iterator.next();
-			String s = "";
-			if( cod.toString() == null || cod.toString().length() <= 0 )
-				s =  "";
-				else if( iterator.hasNext() )
-					s =  ", ";
-				else
-					s =  " e ";
-			
-			cod.append(s + c);
+	}
+
+	protected String juntaCodigosFatura(ArrayList<String> codigos) {
+		ArrayList<String> novoCodigos = new ArrayList<String>();
+		for (int i = 0; i < codigos.size(); i++) {
+			String codigo = codigos.get(i);
+			Boolean penultimoElemento = i == codigos.size() - 2;
+			Boolean ultimoElemento = i == codigos.size() - 1;
+			if (ultimoElemento) {
+				novoCodigos.add(codigo);
+			} else if (penultimoElemento) {
+				novoCodigos.add(codigo + " e ");
+			} else {
+				novoCodigos.add(codigo + ", ");
+			}
 		}
-		
-		return texto + cod;
+		String novoCodigosTexto = String.join("", novoCodigos);
+		return novoCodigosTexto;
+	}
+
+	protected ArrayList<String> converteArrayList(ArrayList<Integer> lista) {
+		ArrayList<String> arrayListString = new ArrayList<String>();
+		for (Integer i : lista) {
+			arrayListString.add(String.valueOf(i));
+		}
+		return arrayListString;
 	}
 }
