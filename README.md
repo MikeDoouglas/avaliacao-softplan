@@ -19,6 +19,13 @@
     - Foi criada uma classe pois não se modifica classes existentes, se extende para implementar novos comportamentos
     - Parametrizei o tipo de moeda corrente e texto
 
+# EXERCICIO 02:
+
+    Por questão de tempo, não finalizei este exercício.
+    Implementações que faltantes:
+    - Arredondar Double: O resultado final não ficou com arredondamento correto
+    - Testes: Não implementei testes
+
 # OBSERVAÇÕES:
     - Para rodar testes `$ mvn tests`
     - Foi criado alguns exemplos na main class App

@@ -3,10 +3,12 @@ package app;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args) throws Exception {
         executaExercicio01();
+        executaExercicio02();
     }
 
     public static void executaExercicio01() {
@@ -28,5 +30,20 @@ public class App {
         geradorObservacaoDetalhada.setLocalMoedaCorrente(new Locale("pt", "BR"));
         String observacaoDetalhada = geradorObservacaoDetalhada.geraObservacao(codigosComValores);
         System.out.println(observacaoDetalhada);
+    }
+
+    public static void executaExercicio02() throws Exception {
+        ExtratorJson extrator = new ExtratorJson();
+        extrator.run();
+        String resultado = "";
+        HashMap<Integer, Composicao> composicoes = extrator.composicoes;
+        for (Map.Entry<Integer, Composicao> item : composicoes.entrySet()) {
+            Integer codigoComposicao = item.getKey();
+            Composicao composicao = item.getValue();
+            resultado += codigoComposicao.toString() + " ";
+            resultado += composicao.getDescricao() + " ";
+            resultado += composicao.calculaValorTotal() + " \n";
+        }
+        System.out.println(resultado);
     }
 }
