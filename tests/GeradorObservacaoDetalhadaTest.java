@@ -1,19 +1,20 @@
-import app.GeradorObservacaoDetalhada;
-import junit.framework.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import app.GeradorObservacao;
+import app.GeradorObservacaoDetalhada;
+
 import java.util.HashMap;
 import java.util.Locale;
 
-public class GeradorObservacaoDetalhadaTest extends TestCase {
-   protected ArrayList<Integer> listaCodigosSemValores;
+public class GeradorObservacaoDetalhadaTest {
    protected HashMap<Integer, Double> listaCodigosVazia, listaCodigosComValores;
    protected GeradorObservacaoDetalhada geradorObservacaoDetalhada;
 
+   @BeforeEach
    protected void setUp() {
-      geradorObservacaoDetalhada = new GeradorObservacaoDetalhada();
-      listaCodigosSemValores = new ArrayList<Integer>();
-      listaCodigosSemValores.add(1);
+      geradorObservacaoDetalhada = new GeradorObservacaoDetalhada(new GeradorObservacao());
       listaCodigosVazia = new HashMap<Integer, Double>();
       listaCodigosComValores = new HashMap<Integer, Double>();
       listaCodigosComValores.put(1, 32.00);
@@ -21,23 +22,19 @@ public class GeradorObservacaoDetalhadaTest extends TestCase {
       listaCodigosComValores.put(3, 1320.03);
    }
 
-   public void testeListaSemDetalhes() {
-      String resultadoEsperado = "Fatura da nota fiscal de simples remessa: 1";
-      String resultado = geradorObservacaoDetalhada.geraObservacao(listaCodigosSemValores);
-      assertTrue(resultado.equals(resultadoEsperado));
-   }
-
+   @Test
    public void testeListaVazia() {
-      String resultadoEsperado = "";
       String resultado = geradorObservacaoDetalhada.geraObservacao(listaCodigosVazia);
-      assertTrue(resultado.equals(resultadoEsperado));
+      assertEquals(resultado, "", 
+      "Ao passar uma lista vazia, deve retornar um texto vazio");
    }
 
+   @Test
    public void testeResultadoOutraMoeda() {
-      String resultadoEsperado = "Fatura das notas fiscais de simples remessa: 1 cujo valor é $32.00, 2 cujo valor é $21.21 e 3 cujo valor é $1,320.03";
       Locale moedaCorrente = new Locale("en", "US");
       geradorObservacaoDetalhada.setLocalMoedaCorrente(moedaCorrente);
       String resultado = geradorObservacaoDetalhada.geraObservacao(listaCodigosComValores);
-      assertEquals(resultado, resultadoEsperado);
+      assertEquals(resultado, "Fatura das notas fiscais de simples remessa: 1 cujo valor é $32.00, 2 cujo valor é $21.21 e 3 cujo valor é $1,320.03",
+      "Ao mudar tipo da moeda corrente, deve retornar os valores dos códigos com a moeda alterada");
    }
 }

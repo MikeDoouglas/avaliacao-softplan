@@ -6,27 +6,34 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class GeradorObservacaoDetalhada extends GeradorObservacao {
+public class GeradorObservacaoDetalhada {
     private Locale localMoedaCorrente;
     private String textoTemplate;
-
-    public GeradorObservacaoDetalhada(Locale localMoedaCorrente, String textoTemplate) {
-        this.localMoedaCorrente = localMoedaCorrente;
-        this.textoTemplate = textoTemplate;
-    }
+    private IGeradorObservacao geradorObservacao;
 
     public GeradorObservacaoDetalhada() {
         this.localMoedaCorrente = new Locale("pt", "BR");
         this.textoTemplate = "%d cujo valor é %s";
     }
 
+    public GeradorObservacaoDetalhada(IGeradorObservacao geradorObservacao) {
+        this.geradorObservacao = geradorObservacao;
+        this.localMoedaCorrente = new Locale("pt", "BR");
+        this.textoTemplate = "%d cujo valor é %s";
+    }
+
+    public GeradorObservacaoDetalhada(Locale localMoedaCorrente, String textoTemplate) {
+        this.localMoedaCorrente = localMoedaCorrente;
+        this.textoTemplate = textoTemplate;
+    }
+
     public String geraObservacao(HashMap<Integer, Double> codigosComValores) {
         if (codigosComValores.isEmpty()) {
             return "";
         }
-        String textoFatura = super.textoFatura(codigosComValores.size());
+        String textoFatura = this.geradorObservacao.textoFatura(codigosComValores.size());
         ArrayList<String> textosCodigosComValores = textosCodigosComValores(codigosComValores);
-        String codigosFatura = super.juntaCodigosFatura(textosCodigosComValores);
+        String codigosFatura = this.geradorObservacao.juntaCodigosFatura(textosCodigosComValores);
         return textoFatura + codigosFatura;
     }
 
