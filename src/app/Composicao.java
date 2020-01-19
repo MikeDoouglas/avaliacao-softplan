@@ -16,11 +16,16 @@ public class Composicao implements Item {
     }
 
     public Double calculaValorTotal() {
-        Double valorTotal = 0.0;
+        Double valorTotalComposicao = 0.0;
         for (ItemComposicao item : itemsComposicao) {
-            valorTotal += item.getItem().getValor() * item.getQuantidade();
+            Double valorTotalItem = item.getItem().getValor() * item.getQuantidade();
+            valorTotalComposicao += truncateDouble(valorTotalItem); 
         }
-        return valorTotal;
+        return valorTotalComposicao;
+    }
+
+    private Double truncateDouble(Double value) {
+        return Math.floor(value * 100) / 100;
     }
 
     @Override

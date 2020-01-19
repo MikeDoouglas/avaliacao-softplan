@@ -2,6 +2,7 @@ package app;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -19,24 +20,27 @@ public class App {
         lista.add(4563);
         GeradorObservacao gerador = new GeradorObservacao();
         String observacao = gerador.geraObservacao(lista);
+        System.out.println("  ######   Exercicio 01   ######");
+        System.out.println("");
         System.out.println(observacao);
-
+        
         HashMap<Integer, Double> codigosComValores = new HashMap<Integer, Double>();
         codigosComValores.put(1, 35.94);
         codigosComValores.put(7, 21.00);
         codigosComValores.put(19, 1500.40);
-        GeradorObservacaoDetalhada geradorObservacaoDetalhada = new GeradorObservacaoDetalhada();
+        GeradorObservacaoDetalhada geradorObservacaoDetalhada = new GeradorObservacaoDetalhada(gerador);
         geradorObservacaoDetalhada.setTextoTemplate("%d cujo valor é %s");
         geradorObservacaoDetalhada.setLocalMoedaCorrente(new Locale("pt", "BR"));
         String observacaoDetalhada = geradorObservacaoDetalhada.geraObservacao(codigosComValores);
         System.out.println(observacaoDetalhada);
+        System.out.println("-----------------------------------------------------------------");
     }
 
     public static void executaExercicio02() throws Exception {
         ExtratorJson extrator = new ExtratorJson();
         extrator.run();
         String resultado = "";
-        HashMap<Integer, Composicao> composicoes = extrator.composicoes;
+        LinkedHashMap<Integer, Composicao> composicoes = extrator.composicoes;
         for (Map.Entry<Integer, Composicao> item : composicoes.entrySet()) {
             Integer codigoComposicao = item.getKey();
             Composicao composicao = item.getValue();
@@ -44,6 +48,8 @@ public class App {
             resultado += composicao.getDescricao() + " ";
             resultado += composicao.calculaValorTotal() + " \n";
         }
+        System.out.println("  ######   Exercicio 02   ######");
+        System.out.println("");
         System.out.println(resultado);
     }
 }

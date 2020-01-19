@@ -2,7 +2,7 @@ package app;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Iterator;
 
 import org.json.simple.JSONArray;
@@ -11,8 +11,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class ExtratorJson {
-    public HashMap<Integer, Insumo> insumos;
-    public HashMap<Integer, Composicao> composicoes;
+    public LinkedHashMap<Integer, Insumo> insumos;
+    public LinkedHashMap<Integer, Composicao> composicoes;
 
     public void run() throws IOException, ParseException {
         FileReader reader = new FileReader("dados-entrada-servicos-composicoes.json");
@@ -43,9 +43,9 @@ public class ExtratorJson {
         }
     }
 
-    public HashMap<Integer, Insumo> extraiInsumos(JSONArray jsonArray) {
+    public LinkedHashMap<Integer, Insumo> extraiInsumos(JSONArray jsonArray) {
         Iterator<JSONObject> iterator = jsonArray.iterator();
-        HashMap<Integer, Insumo> insumos = new HashMap<Integer, Insumo>();
+        LinkedHashMap<Integer, Insumo> insumos = new LinkedHashMap<Integer, Insumo>();
         while (iterator.hasNext()) {
             JSONObject jsonItem = iterator.next();
             Integer codigo = ((Long) jsonItem.get("codigoItem")).intValue();
@@ -61,8 +61,8 @@ public class ExtratorJson {
         return insumos;
     }
 
-    public HashMap<Integer, Composicao> extraiComposicoes(JSONArray jsonArray) {
-        HashMap<Integer, Composicao> composicoes = new HashMap<Integer, Composicao>();
+    public LinkedHashMap<Integer, Composicao> extraiComposicoes(JSONArray jsonArray) {
+        LinkedHashMap<Integer, Composicao> composicoes = new LinkedHashMap<Integer, Composicao>();
         Iterator<JSONObject> iterator = jsonArray.iterator();
         while (iterator.hasNext()) {
             JSONObject jsonItem = iterator.next();
